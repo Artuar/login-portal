@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { userActions } from '../actions';
 
-export class RegisterPage extends Component {
+class RegisterPageComponent extends Component {
     constructor(props) {
         super(props);
 
@@ -44,7 +44,7 @@ export class RegisterPage extends Component {
                     </div>
                     <div className={'form-group' + (submitted && !user.password ? ' has-error' : '')}>
                         <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password"/>
+                        <input type="password" className="form-control password" name="password"/>
                         {submitted && !user.password &&
                             <div className="help-block">Password is required</div>
                         }
@@ -61,7 +61,16 @@ export class RegisterPage extends Component {
 
 // complete the below function
 function mapStateToProps(state) {
-    
+    return {}
 }
+
+const mapDispatchToProps = dispatch => ({
+
+});
+
+export const RegisterPage = connect(
+    mapStateToProps, 
+    mapDispatchToProps
+)(RegisterPageComponent);
 
 export { RegisterPage as TestRegisterPage };

@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { userActions } from '../actions';
+import { userService } from '../services';
 
-export class LoginPage extends Component {
+class LoginPageComponent extends Component {
     constructor(props) {
         super(props);
 
-        // reset login status
+        userService.logout();
 
         this.state = {
             username: '',
@@ -22,10 +23,12 @@ export class LoginPage extends Component {
     }
 
     handleChange(e) {
+
     }
 
     handleSubmit(e) {
-        
+        const { login, username, password } = this.props;
+        login(username, password);
     }
 
     render() {
@@ -43,7 +46,7 @@ export class LoginPage extends Component {
                     </div>
                     <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
                         <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password"/>
+                        <input type="password" className="form-control password" name="password"/>
                         {submitted && !password &&
                             <div className="help-block">Password is required</div>
                         }
@@ -58,7 +61,19 @@ export class LoginPage extends Component {
 }
 
 function mapStateToProps(state) {
-
+    const { authentication } = state;
+    return {
+        authentication,
+    }
 }
+  
+const mapDispatchToProps = dispatch => ({
+
+});
+
+export const LoginPage = connect(
+    mapStateToProps, 
+    mapDispatchToProps
+)(LoginPageComponent);
 
 export { LoginPage as TestLoginPage };
