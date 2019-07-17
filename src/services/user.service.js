@@ -11,9 +11,12 @@ function login(username, password) {
         body: JSON.stringify({ username, password })
     };
 
-    localStorage.setItem('user', true); // TODO
     return fetch('/users/authenticate', requestOptions)
-    .then(handleResponse);    
+        .then(handleResponse)
+        .then(res => {
+            localStorage.setItem('user', JSON.stringify(res));
+            return res;
+        });    
 }
 
 function logout() {

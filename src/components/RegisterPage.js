@@ -22,11 +22,14 @@ class RegisterPageComponent extends Component {
     }
 
     handleChange(event) {
-        // handle input change and dispatch register
+        const { value, id } = event.target;
+        this.setState({user: {...this.state.user, [id]:value}});
     }
 
     handleSubmit(event) {
-        // handle button click and dispatch register
+        const { user: {username, password } } = this.state;
+        event.preventDefault();
+        this.props.dispatch(userActions.register({username, password}));
     }
 
     render() {
@@ -34,17 +37,17 @@ class RegisterPageComponent extends Component {
         return (
             <div className="col-md-6 col-md-offset-3">
                 <h2>Register</h2>
-                <form name="form">
+                <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !user.username ? ' has-error' : '')}>
                         <label htmlFor="username">Username</label>
-                        <input type="text" className="form-control username" name="username" />
+                    <input id="username" type="text" className="form-control username" name="username" onChange={this.handleChange}/>
                         {submitted && !user.username &&
                             <div className="help-block">Username is required</div>
                         }
                     </div>
                     <div className={'form-group' + (submitted && !user.password ? ' has-error' : '')}>
                         <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control password" name="password"/>
+                    <input id="password" type="password" className="form-control password" name="password" onChange={this.handleChange}/>
                         {submitted && !user.password &&
                             <div className="help-block">Password is required</div>
                         }
@@ -64,13 +67,8 @@ function mapStateToProps(state) {
     return {}
 }
 
-const mapDispatchToProps = dispatch => ({
-
-});
-
 export const RegisterPage = connect(
-    mapStateToProps, 
-    mapDispatchToProps
+    mapStateToProps,
 )(RegisterPageComponent);
 
 export { RegisterPage as TestRegisterPage };
