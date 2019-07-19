@@ -21,14 +21,15 @@ class RegisterPageComponent extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event) {
-        const { value, id } = event.target;
-        this.setState({user: {...this.state.user, [id]:value}});
+    handleChange(name, event) {
+        const { value } = event.target;
+        this.setState({user: {...this.state.user, [name]:value}});
     }
 
     handleSubmit(event) {
-        const { user: {username, password } } = this.state;
         event.preventDefault();
+        const { user: {username, password } } = this.state;
+        this.setState({submitted: true});
         this.props.dispatch(userActions.register({username, password}));
     }
 
@@ -40,14 +41,28 @@ class RegisterPageComponent extends Component {
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !user.username ? ' has-error' : '')}>
                         <label htmlFor="username">Username</label>
-                    <input id="username" type="text" className="form-control username" name="username" onChange={this.handleChange}/>
+                    <input 
+                        id="username" 
+                        type="text" 
+                        className="form-control username" 
+                        name="username" 
+                        value={user.username || ''}
+                        onChange={event => this.handleChange('username', event)}
+                    />
                         {submitted && !user.username &&
                             <div className="help-block">Username is required</div>
                         }
                     </div>
                     <div className={'form-group' + (submitted && !user.password ? ' has-error' : '')}>
                         <label htmlFor="password">Password</label>
-                    <input id="password" type="password" className="form-control password" name="password" onChange={this.handleChange}/>
+                    <input 
+                        id="password" 
+                        type="password" 
+                        className="form-control password" 
+                        name="password" 
+                        value={user.password || ''}
+                        onChange={event => this.handleChange('password', event)}
+                    />
                         {submitted && !user.password &&
                             <div className="help-block">Password is required</div>
                         }
@@ -62,13 +77,15 @@ class RegisterPageComponent extends Component {
     }
 }
 
-// complete the below function
 function mapStateToProps(state) {
-    return {}
+    const { registration } = state;
+    return {
+        failure: registration.failure,
+    }
 }
 
 export const RegisterPage = connect(
-    mapStateToProps,
+    mapStateToProps
 )(RegisterPageComponent);
 
 export { RegisterPage as TestRegisterPage };

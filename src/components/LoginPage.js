@@ -2,9 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import { userActions } from '../actions';
-import { userService } from '../services';
 
 class LoginPageComponent extends Component {
     constructor(props) {
@@ -24,14 +22,15 @@ class LoginPageComponent extends Component {
         this.props.dispatch(userActions.logout());
     }
 
-    handleChange(event) {
-        const { value, id } = event.target;
-        this.setState({[id]:value});
+    handleChange(name, event) {
+        const { value } = event.target;
+        this.setState({[name]:value});
     }
 
     handleSubmit(e) {
         const { username, password } = this.state;
         e.preventDefault();
+        this.setState({submitted:true});
         this.props.dispatch(userActions.login(username, password));
     }
 
@@ -43,14 +42,26 @@ class LoginPageComponent extends Component {
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
                         <label htmlFor="username">Username</label>
-                        <input id="username" type="text" className="form-control username" name="username" onChange={this.handleChange} />
+                        <input 
+                            id="username" 
+                            type="text" 
+                            className="form-control username" 
+                            name="username" 
+                            onChange={event => this.handleChange("username", event)} 
+                        />
                         {submitted && !username &&
                             <div className="help-block">Username is required</div>
                         }
                     </div>
                     <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
                         <label htmlFor="password">Password</label>
-                        <input id="password" type="password" className="form-control password" name="password" onChange={this.handleChange}/>
+                        <input 
+                            id="password" 
+                            type="password" 
+                            className="form-control password" 
+                            name="password" 
+                            onChange={event => this.handleChange("password", event)}
+                        />
                         {submitted && !password &&
                             <div className="help-block">Password is required</div>
                         }
@@ -68,7 +79,7 @@ class LoginPageComponent extends Component {
 function mapStateToProps(state) {
     const { authentication } = state;
     return {
-        authentication,
+        failure: authentication.failure,
     }
 }
 

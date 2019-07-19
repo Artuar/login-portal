@@ -7,6 +7,7 @@ import { alertActions } from './actions';
 import { HomePage } from './components/HomePage';
 import { LoginPage } from './components/LoginPage';
 import { RegisterPage } from './components/RegisterPage';
+import { Alert } from './components/Alert';
 
 class AppComponent extends React.Component {
     constructor(props) {
@@ -14,35 +15,28 @@ class AppComponent extends React.Component {
 
         const { dispatch } = this.props;
         history.listen((location, action) => {
-
+            dispatch(alertActions.clear());
         });
     }
 
     render() {
-        const { alert } = this.props;
         return (
-                <div className="container">
-                    <Router history={history}>
-                        <div className="col-sm-8 col-sm-offset-2">
-                            <PrivateRoute exact path="/" component={HomePage} />
-                            <Route path="/login" component={LoginPage} />
-                            <Route path="/register" component={RegisterPage} />
-                        </div>
-                    </Router>
-              </div>
+            <div className="container">
+                <Alert />
+                <Router history={history}>
+                    <div className="col-sm-8 col-sm-offset-2">
+                        <PrivateRoute exact path="/" component={HomePage} />
+                        <Route path="/login" component={LoginPage} />
+                        <Route path="/register" component={RegisterPage} />
+                    </div>
+                </Router>
+            </div>
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    const { alert } = state;
-    return {
-        alert
-    };
+    return { };
 }
 
-const mapDispatchToProps = dispatch => ({
-    
-});
-
-export const App = connect(mapStateToProps, mapDispatchToProps)(AppComponent);
+export const App = connect(mapStateToProps)(AppComponent);

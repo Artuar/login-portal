@@ -5,5 +5,6 @@ import rootReducer from '../reducers';
 
 export const store = createStore(
     rootReducer,
+    undefined,
     applyMiddleware(thunkMiddleware)
 );

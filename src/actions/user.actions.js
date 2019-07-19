@@ -12,8 +12,8 @@ export function login (username, password) {
         dispatch({ type: userConstants.LOGIN_SUCCESS, user: username });
       },
       err => {
-        console.log('err', err);
-        return dispatch({ type: userConstants.LOGIN_FAILURE, error: err })
+        dispatch(alertActions.error(err))
+        dispatch({ type: userConstants.LOGIN_FAILURE, error: err })
       }
     );
   }; 
@@ -31,9 +31,11 @@ function register(user) {
           res => {
             history.push('/login');
             dispatch({ type: userConstants.REGISTER_SUCCESS, user: user.username });
+            dispatch(alertActions.success('Registration successfull'));
           },
           err => {
-            return dispatch({ type: userConstants.REGISTER_FAILURE, error: err })
+            dispatch({ type: userConstants.REGISTER_FAILURE, error: err });
+            dispatch(alertActions.error(err));
           }
         );
       };
