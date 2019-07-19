@@ -4,19 +4,17 @@ export const userService = {
     register
 };
 
-function login(username, password) {
+async function login(username, password) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
     };
 
-    return fetch('/users/authenticate', requestOptions)
-        .then(handleResponse)
-        .then(res => {
-            localStorage.setItem('user', JSON.stringify(res));
-            return res;
-        });    
+    const response = await fetch('/users/authenticate', requestOptions);
+    const res = await handleResponse(response);
+    localStorage.setItem('user', JSON.stringify(res));
+    return res;    
 }
 
 function logout() {
@@ -24,14 +22,15 @@ function logout() {
 }
 
 
-function register(user) {
+async function register(user) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user)
     };
 
-    return fetch('/users/register', requestOptions).then(handleResponse);
+    const response = await fetch('/users/register', requestOptions);
+    return handleResponse(response);
 }
 
 
