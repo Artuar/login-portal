@@ -78,10 +78,7 @@ class RegisterPageComponent extends Component {
 }
 
 function mapStateToProps(state) {
-    const { registration } = state;
-    return {
-        failure: registration.failure,
-    }
+    return { }
 }
 
 export const RegisterPage = connect(

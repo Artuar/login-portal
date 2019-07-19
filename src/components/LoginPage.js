@@ -77,10 +77,7 @@ class LoginPageComponent extends Component {
 }
 
 function mapStateToProps(state) {
-    const { authentication } = state;
-    return {
-        failure: authentication.failure,
-    }
+    return { }
 }
 
 export const LoginPage = connect(
